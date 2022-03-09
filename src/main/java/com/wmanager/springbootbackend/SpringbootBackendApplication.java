@@ -23,6 +23,6 @@ public class SpringbootBackendApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		this.productRepository.save(
-				new Product("Goggins-Bot", "Din artificiella personliga hetsare. Är du trött? Goggins-Bot skriker på dig tills du blir pigg.", 0));
+				new Product("Goggins-Bot", 0, "Your artificial motivator! Are you feeling low? Goggins-Bot will shout at you until you pull yourself together."));
 	}
 }
