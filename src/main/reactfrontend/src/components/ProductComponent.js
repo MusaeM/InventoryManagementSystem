@@ -1,150 +1,135 @@
 import React from 'react';
+import {Button, TextField} from "@mui/material";
+import Popup from "reactjs-popup";
 import ProductService from "../services/ProductService";
-import { DataGrid } from '@mui/x-data-grid';
-import CounterButton from './CounterButton';
-import axios from "axios";
+
+const TableHeader = () => {
+    return (
+        <thead className="tablehead-text">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Quantity</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+    )
+}
+
+let stockValue = 0;
+
+const TableBody = (props) => {
+    const rows = props.productData.map((row, id) => {
+        return (
+            <tr key={row.id}>
+                <td>{row.id}</td>
+                <td>{row.name}</td>
+                <td >{row.quantity}</td>
+                <td>{row.description}</td>
+                <td>
+                    <Popup trigger={<Button variant="contained"> Edit Stock </Button>}
+                               position="center">
+                        <div className="popup-box">
+                            <div className="popup-window">
+                                    <div className="productbox-pop">
+                                        <div className="productname-pop">
+                                            {row.name}
+                                        </div>
+                                        <br />
+                                        <div className="quantity-box">
+                                            <table>
+                                                <thead className="tablehead-pop">
+                                                    <tr>
+                                                        <th>Quantity</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody className="tablebody-pop">
+                                                    <tr>
+                                                        <th>{row.quantity}</th>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                <div className="value-box">
+                                        <div className="each-editbox">
+                                            <TextField label="Amount to re-stock" onChange={handleOnChange} type="number" />
+                                            <Button variant="contained" onClick={() => props.incrementQuantity(0, stockValue)}>Buy</Button>
+                                        </div>
+                                        <div className="each-editbox">
+                                            <TextField label="Amount to sell" onChange={handleOnChange} type="number" />
+                                            <Button variant="contained" onClick={() => props.decrementQuantity(0, stockValue)}>Sell</Button>
+                                        </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </Popup>
+                </td>
+            </tr>
+        )
+    })
+    return <tbody className="tablebody-text">{rows}</tbody>
+}
+
+const handleOnChange = event => {
+    stockValue = parseInt(event.target.value);
+};
+
 
 class ProductComponent extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            products: [],
-            counter:0
+            products: []
         }
-        this.increment = this.increment.bind(this);
-        this.decrement = this.decrement.bind(this);
-    }
-
-    getProducts(){
-        const PRODUCTS_REST_API_URL = 'http://localhost:8080/api/products';
-
-        return axios.get(PRODUCTS_REST_API_URL)
     }
 
     componentDidMount() {
-        this.getProducts().then((response) => {
+        ProductService.getProducts().then((response) => {
             this.setState({
                 products: response.data
             })
-
-            console.log("RES: ", response)
-            console.log("RES.DATA: ", response.data)
-            console.log("RES-ID: ", response.data[0].id)
-            console.log("RES-NAME: ", response.data[0].name)
-            console.log("RES-QUANTITY: ", response.data[0].quantity)
-
-            console.log("STATE: ", this.state.products);
-            console.log("STATE-ID: ", this.state.products[0].id);
-            console.log("STATE-NAME: ", this.state.products[0].name);
-            console.log("STATE-QUANTITY: ", this.state.products[0].quantity);
-            });
+        });
     }
+
+    incrementQuantity = (index, value) => {
+
+        this.setState((incArray) => {
+            incArray.products[index].quantity += value;
+            return incArray
+        });
+    }
+
+    decrementQuantity = (index, value) => {
+        console.log("IncArray", this.state.products)
+        this.setState((incArray) => {
+            if(incArray.products[index].quantity !== 0) {
+                incArray.products[index].quantity -= value;
+                return incArray
+            } else {
+                alert("No more products in stock!!")
+            }
+            console.log("IncArray", incArray)
+        });
+    }
+
 
     render (){
         return (
             <div className="table-container">
-                <h1 className = "headline-center">Products List</h1>
+                <h1 className = "headline-center">Product List</h1>
+                <br/>
                 <table className="table table-lined">
-                    <thead className="tablehead-text">
-                    <tr>
-                        <td>ID</td>
-                        <td>Name</td>
-                        <td>Quantity</td>
-                        <td>Description</td>
-                        <td></td>
-                    </tr>
-                    </thead>
-                    <tbody className="tablebody-text">
-                    {
-                        this.state.products.map(
-                            product =>
-                                <tr key = {product.id}>
-                                    <td>{product.id}</td>
-                                    <td>{product.name}</td>
-                                    <td>{product.quantity}</td>
-                                    <td>{product.description}</td>
-                                    <td><CounterButton by={1} incrementMethod={this.increment} decrementMethod={this.decrement}/></td>
-                                </tr>
-                        )
-                    }
-                    </tbody>
-
-
+                    <TableHeader />
+                    <TableBody productData={this.state.products} incrementQuantity={this.incrementQuantity} decrementQuantity={this.decrementQuantity}/>
                 </table>
-
             </div>
         );
     }
 
-
-    increment = (by) => {
-        /*
-        console.log(`Increment from child ${by}`)
-        this.setState({
-            products: [{
-                ...this.state.products, quantity:+by
-            }]
-        })
-         */
-        console.log("QUANTITY-INCREMENT PRESSED: ", this.state.counter);
-    }
-
-    decrement = (by) => {
-        /*
-        console.log(`Decrement from child ${by}`)
-        this.setState({
-            products: [{
-                ...this.state.products, quantity:-by
-            }]
-        })
-         */
-        console.log("QUANTITY-DECREMENT PRESSED: ", this.state.quantity);
-    }
-
-
 }
 
 export default ProductComponent
-
-
-/*
-                    <tbody>
-                    {
-                        this.state.products.map(
-                            product =>
-                                <tr key = {product.id}>
-                                    <td>{product.id}</td>
-                                    <td>{product.name}</td>
-                                    <td>{product.quantity}</td>
-                                    <td>{product.description}</td>
-                                    <td><CounterButton by={1} incrementMethod={this.increment} decrementMethod={this.decrement}/></td>
-                                </tr>
-                        )
-                    }
-                    </tbody>
- */
-
-/*
-
-
-            <Button variant="contained" onClick={() => {
-                return alert("Yey");
-            }}>Buy</Button>,
-            <Button variant="contained" onClick={() => {
-                return alert("Nay");
-            }}>Sell</Button>
- */
-
-/*
-
-<DataGrid
-                    rows={this.state.products}
-                    columns={columns}
-                    pageSize={2}
-                    rowsPerPageOptions={[2]}
-                    checkboxSelection
-                />
-
-
- */

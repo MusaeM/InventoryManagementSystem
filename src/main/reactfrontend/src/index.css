@@ -28,11 +28,11 @@ code {
 
 .tablehead-text {
   font-weight: bold;
-  font-size: 25px;
+  font-size: 30px;
 }
 
 .tablebody-text {
-  font-size: 20px;
+  font-size: 25px;
 }
 
 .table-container {
@@ -44,4 +44,68 @@ code {
   background: linear-gradient(to bottom, #4b7db2, #3e5f83);
   width: 100%;
   box-sizing: border-box;
+}
+
+.popup-box {
+  position: fixed;
+  background: #00000050;
+  width: 50%;
+  height: 50%;
+  top: 25%;
+  left: 25%;
+}
+
+.popup-window {
+  position: relative;
+  width: 70%;
+  margin: 0 auto;
+  height: 40%;
+  max-height: 70vh;
+  margin-top: 15%;
+  background: #fff;
+  border-radius: 4px;
+  padding: 20px;
+  border: 1px solid #999;
+  overflow: auto;
+  display: flex;
+  justify-content: space-around;
+}
+
+.productname-pop {
+  font-weight: bold;
+  font-size: 30px;
+  text-decoration: underline;
+}
+
+.tablehead-pop {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.tablebody-pop {
+  font-size: 20px;
+  text-align: center;
+}
+
+.productbox-pop {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.quantity-box {
+  background-color: #e3e2e2;
+  padding: 10px;
+}
+
+.value-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.each-editbox {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }

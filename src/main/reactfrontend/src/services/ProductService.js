@@ -8,8 +8,6 @@ class ProductService {
         return axios.get(PRODUCTS_REST_API_URL)
     }
 
-
-
 }
 
 export default new ProductService();
