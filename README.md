@@ -12,3 +12,13 @@ Functions and guidelines
 4.	User can display current amount of quantity.
 
 Storage is made in memory, and is not saved between appruns.
+
+## Starting the Application
+
+1. Run SpringbootBackendApplication
+
+2. Navigate to reactfrontend folder in terminal ```cd .\src\main\reactfrontend\```
+      
+3. Run React ```npm start```
+
+
