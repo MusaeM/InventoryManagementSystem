@@ -19,6 +19,8 @@ Storage is made in memory, and is not saved between appruns.
 
 2. Navigate to reactfrontend folder in terminal ```cd .\src\main\reactfrontend\```
       
-3. Run React ```npm start```
+3. If you do not have npm installed already, first run install ```npm install```  
+
+4. Run React ```npm start```
 
 
